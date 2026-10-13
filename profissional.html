@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Profissional | Instituto Três Pontinhos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script src="js/firebase-config.js"></script>
+  <script src="js/banco.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/global.js"></script>
+  <script>window.TP_SESSAO = Auth.exigir(['profissional']);</script>
+</head>
+<body>
+
+  <header class="app-header">
+    <a href="index.html" class="brand-logo-container" aria-label="Ir para o site do Instituto">
+      <span class="logo-box">
+        <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+          <circle class="face-blue" cx="25" cy="25" r="10" />
+          <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+          <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+          <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+        </svg>
+      </span>
+      <span class="logo-text-group">
+        <span class="sub">Instituto</span>
+        <span class="title">três pontinhos</span>
+      </span>
+    </a>
+
+    <div class="user-nav">
+      <span class="badge-perfil" data-usuario-perfil>Profissional</span>
+      <span class="nome" data-usuario-nome>—</span>
+      <a href="login.html" class="btn-ghost" data-acao="sair">Sair</a>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="cabecalho-pagina">
+      <h2>🩺 Meus atendimentos</h2>
+      <div style="display:flex; gap:.6rem; align-items:center; flex-wrap:wrap">
+        <label for="filtroData" class="form-hint" style="margin:0">Filtrar por data:</label>
+        <input type="date" id="filtroData" class="input-field" style="width:auto">
+        <button type="button" class="btn-outline btn-pequeno" data-acao="ver-todos">Ver todos</button>
+      </div>
+    </div>
+
+    <div id="avisoSolicitacoes"></div>
+
+    <div class="tabela-scroll">
+      <table class="app-table">
+        <thead>
+          <tr>
+            <th>Sala de atendimento</th>
+            <th>Paciente</th>
+            <th>Horário</th>
+            <th>Terapia</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela"></tbody>
+      </table>
+    </div>
+
+    <p class="form-hint mt-2">
+      Modo de dados: <strong id="modoDados">verificando...</strong> ·
+      <a href="index.html">Voltar ao site do Instituto</a>
+    </p>
+  </main>
+
+  <script src="js/profissional.js"></script>
+</body>
+</html>

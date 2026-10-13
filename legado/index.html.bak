@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instituto Três Pontinhos - Acolher, Ajudar e Acompanhar</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Estilos do cabeçalho e da Home */
+    header {
+      background-color: var(--azul-vibrante);
+      padding: 0.8rem 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .hero {
+      padding: 4rem 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      background: white;
+      border-bottom: 1px solid var(--cor-borda);
+    }
+
+    .hero-content { max-width: 600px; }
+    .hero-title { font-size: 2.5rem; color: var(--azul-escuro); margin-bottom: 1rem; line-height: 1.2; }
+    .hero-subtitle { font-size: 1.1rem; color: var(--texto-suave); margin-bottom: 1.8rem; }
+
+    .btn-hero {
+      background-color: var(--laranja-brand);
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-hero:hover { background-color: #ea580c; }
+
+    .secao-servicos { padding: 4rem 6%; max-width: 1200px; margin: 0 auto; }
+    .grid-servicos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .card-servico {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--raio-borda);
+      border: 1px solid var(--cor-borda);
+      box-shadow: var(--sombra-card);
+    }
+    .card-servico h3 { color: var(--azul-vibrante); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO DA LANDING PAGE -->
+  <header>
+    <!-- LOGOTIPO INTERATIVO COM ANIMAÇÃO PISCANDO -->
+<a href="index.html" class="brand-logo-container">
+  <svg class="logo-face-svg" viewBox="0 0 100 80">
+    <!-- Olho Esquerdo Azul -->
+    <circle class="face-blue" cx="25" cy="25" r="10" />
+    <!-- Olho Direito Azul que Pisca -->
+    <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+    <!-- Boca Azul -->
+    <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+    <!-- Língua Laranja -->
+    <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+  </svg>
+  <div class="logo-text-group">
+    <span class="sub">Instituto</span>
+    <span class="title">três pontinhos</span>
+    <span class="slogan">Acolher, ajudar e acompanhar</span>
+  </div>
+</a>
+
+    <nav style="display: flex; gap: 1rem; align-items: center;">
+      <a href="#servicos" style="color: white; text-decoration: none; font-weight: 700;">Nossas Terapias</a>
+      <a href="login.html" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none; font-weight: 700;">Área Restrita / Login</a>
+    </nav>
+  </header>
+
+  <!-- SEÇÃO PRINCIPAL (HERO) -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Acolher, ajudar e acompanhar o desenvolvimento do seu filho.</h1>
+      <p class="hero-subtitle">Especialistas em desenvolvimento infantil integrando ciência, carinho e multidisciplinaridade.</p>
+      <a href="login.html" class="btn-hero">Acessar Plataforma do Instituto</a>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE TERAPIAS E ESPECIALIDADES -->
+  <section id="servicos" class="secao-servicos">
+    <h2 style="color: var(--azul-escuro); text-align: center; font-size: 2rem;">Especialidades do Instituto</h2>
+    <p style="text-align: center; color: var(--texto-suave); margin-top: 0.5rem;">Tratamentos personalizados para cada fase do desenvolvimento.</p>
+
+    <div class="grid-servicos">
+      <div class="card-servico">
+        <h3>🧩 Terapia ABA + Psicomotricidade</h3>
+        <p>Intervenção comportamental intensiva combinada com o desenvolvimento motor e coordenação corporal.</p>
+      </div>
+
+      <div class="card-servico">
+        <h3>💬 Psicoterapia</h3>
+        <p>Suporte emocional especializado para crianças, adolescentes e acompanhamento familiar continuo.</p>
+      </div>
+
+      <div class="card-servico">
+        <h3>🥗 Terapia Nutricional</h3>
+        <p>Acompanhamento focado em seletividade alimentar, nutrição comportamental e saúde infantil integrativa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCRIPT PARA A ANIMAÇÃO DO LOGO PISCANDO AO CLICAR EM QUALQUER LUGAR DA HOME -->
+  <script>
+    document.addEventListener('click', function(event) {
+      // Verifica se o clique ocorreu em um botão, link, card ou no logotipo
+      const elementoClicado = event.target.closest('a, button, .btn-hero, .card-servico, .brand-logo-container');
+      
+      if (elementoClicado) {
+        const logo = document.querySelector('.brand-logo-container');
+        if (logo) {
+          logo.classList.add('piscando');
+          
+          // Mantém a pisca por 200ms
+          setTimeout(() => {
+            logo.classList.remove('piscando');
+          }, 200);
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

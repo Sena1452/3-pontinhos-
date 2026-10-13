@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Profissional - Instituto Três Pontinhos</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    header {
+      background-color: var(--azul-vibrante);
+      padding: 0.8rem 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .container { padding: 2rem 4%; max-width: 1200px; margin: 0 auto; }
+
+    .status-bolinha {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .bolinha-verde { background-color: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
+    .bolinha-cinza { background-color: #cbd5e1; }
+
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--cor-borda); }
+    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--cor-borda); }
+    th { background: #f8fafc; color: var(--azul-escuro); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- LOGOTIPO INTERATIVO COM PISCADA DE OLHO -->
+<a href="index.html" class="brand-logo-container">
+  <svg class="logo-face-svg" viewBox="0 0 100 80">
+    <!-- Olho Esquerdo Azul -->
+    <circle class="face-blue" cx="25" cy="25" r="10" />
+    <!-- Olho Direito Azul que Pisca -->
+    <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+    <!-- Boca Azul -->
+    <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+    <!-- Língua Laranja -->
+    <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+  </svg>
+  <div class="logo-text-group">
+    <span class="sub">Instituto</span>
+    <span class="title">três pontinhos</span>
+    <span class="slogan">Acolher, ajudar e acompanhar</span>
+  </div>
+</a>
+
+    <div>
+      <span style="font-weight: 700; margin-right: 1rem;">Dra. Ana Souza (Profissional)</span>
+      <a href="login.html" onclick="localStorage.clear()" style="color: white; font-weight: 700; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 6px;">Sair</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+      <h2 style="color: var(--azul-escuro);">🩺 Atendimentos Agendados do Dia</h2>
+      <input type="date" id="dataAtendimento" style="padding: 0.5rem; border-radius: 6px; border: 1px solid var(--cor-borda);">
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>SALA DE ATENDIMENTO</th>
+          <th>PACIENTE</th>
+          <th>HORÁRIO</th>
+          <th>TERAPIA</th>
+          <th>AÇÃO ÚNICA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <button type="button" style="background: transparent; border:none; display:flex; align-items:center; gap:0.5rem; cursor:pointer;" onclick="alternarPresenca(this)">
+              <span class="status-bolinha bolinha-cinza"></span>
+              <small style="font-weight:700; color:var(--texto-suave);">Marcar Entrada na Sala</small>
+            </button>
+          </td>
+          <td><strong>Lucas Oliveira</strong></td>
+          <td>14:00</td>
+          <td>Terapia ABA + Psicomotricidade</td>
+          <td>
+            <!-- BOTÃO ÚNICO SOLICITADO PARA O PROFISSIONAL -->
+            <button style="background: var(--laranja-brand); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer;" onclick="solicitarProximaConsulta('Lucas Oliveira')">
+              🗓️ Solicitar Próxima Consulta
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.getElementById('dataAtendimento').valueAsDate = new Date();
+
+    // ANIMAÇÃO DO OLHO PISCANDO AO CLICAR EM BOTÕES
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('.brand-logo-container')) {
+        const logo = document.querySelector('.brand-logo-container');
+        if (logo) {
+          logo.classList.add('piscando');
+          setTimeout(() => logo.classList.remove('piscando'), 200);
+        }
+      }
+    });
+
+    function alternarPresenca(btn) {
+      const bolinha = btn.querySelector('.status-bolinha');
+      const texto = btn.querySelector('small');
+      if (bolinha.classList.contains('bolinha-cinza')) {
+        bolinha.classList.remove('bolinha-cinza');
+        bolinha.classList.add('bolinha-verde');
+        texto.innerText = "Em Atendimento";
+        texto.style.color = "#10b981";
+      } else {
+        bolinha.classList.remove('bolinha-verde');
+        bolinha.classList.add('bolinha-cinza');
+        texto.innerText = "Marcar Entrada na Sala";
+        texto.style.color = "var(--texto-suave)";
+      }
+    }
+
+    function solicitarProximaConsulta(nome) {
+      alert(`📩 Solicitação da próxima consulta de ${nome} enviada com sucesso para a Coordenadoria!`);
+    }
+  </script>
+
+</body>
+</html>

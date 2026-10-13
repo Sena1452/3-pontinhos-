@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordenadoria | Instituto Três Pontinhos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script src="js/firebase-config.js"></script>
+  <script src="js/banco.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/global.js"></script>
+  <script>window.TP_SESSAO = Auth.exigir(['coordenacao']);</script>
+</head>
+<body>
+
+  <header class="app-header">
+    <a href="index.html" class="brand-logo-container" aria-label="Ir para o site do Instituto">
+      <span class="logo-box">
+        <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+          <circle class="face-blue" cx="25" cy="25" r="10" />
+          <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+          <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+          <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+        </svg>
+      </span>
+      <span class="logo-text-group">
+        <span class="sub">Instituto</span>
+        <span class="title">três pontinhos</span>
+      </span>
+    </a>
+
+    <div class="user-nav">
+      <span class="badge-perfil" data-usuario-perfil>Coordenadoria</span>
+      <span class="nome" data-usuario-nome>—</span>
+      <a href="login.html" class="btn-ghost" data-acao="sair">Sair</a>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="abas">
+      <button type="button" class="btn-aba active" data-aba="agendamentos">📅 Agendamentos (calendário)</button>
+      <button type="button" class="btn-aba" data-aba="pacientes">👥 Pacientes cadastrados</button>
+      <button type="button" class="btn-aba" data-aba="cadastro">➕ Cadastro de novo paciente</button>
+    </div>
+
+    <div id="avisoSolicitacoes"></div>
+
+    <!-- ABA 1: CALENDÁRIO -->
+    <section class="secao-aba active" id="aba-agendamentos">
+      <div class="cabecalho-pagina">
+        <h2 id="tituloMes">Calendário de atendimentos</h2>
+        <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center;">
+          <button type="button" class="btn-laranja btn-pequeno" data-acao="abrir-novo-agendamento">+ Novo Agendamento</button>
+          <button type="button" class="btn-outline btn-pequeno" data-acao="mes-anterior">&lt; Mês anterior</button>
+          <button type="button" class="btn-outline btn-pequeno" data-acao="mes-atual">Hoje</button>
+          <button type="button" class="btn-outline btn-pequeno" data-acao="mes-proximo">Próximo mês &gt;</button>
+        </div>
+      </div>
+
+      <!-- LEGENDA DE CORES DAS SESSÕES -->
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; padding:.8rem 1rem; background:#fff; border-radius:10px; border:1px solid var(--cor-borda); align-items:center;">
+        <span style="font-size:.78rem; font-weight:800; color:var(--azul-escuro); margin-right:.4rem;">CATEGORIAS:</span>
+        <span class="tag-categoria tag-reposicao">🟣 Reposição de Crianças</span>
+        <span class="tag-categoria tag-particular">🟢 Sessão Particular</span>
+        <span class="tag-categoria tag-triagem">🟡 Triagem</span>
+        <span class="tag-categoria tag-nutricionista">🥗 Nutricionista</span>
+        <span class="tag-categoria tag-pis">🔵 Sessão PIS</span>
+        <span class="tag-categoria tag-adiado">🟠 Adiado</span>
+        <span class="tag-categoria tag-feriado">🔴 Feriado</span>
+      </div>
+
+      <div class="cal-grid" id="calendario"></div>
+      <p class="form-hint mt-1">Clique em qualquer dia para ver os detalhes, confirmar presenças ou gerenciar justificativas de falta com atestado.</p>
+    </section>
+
+    <!-- ABA 2: PACIENTES -->
+    <section class="secao-aba" id="aba-pacientes">
+      <div class="cabecalho-pagina">
+        <h2>Pacientes cadastrados</h2>
+        <div>
+          <label for="selectOrdenacao" class="form-hint" style="margin:0">Ordenar por:</label>
+          <select id="selectOrdenacao" class="input-field" style="width:auto; display:inline-block">
+            <option value="nome">Nome (A-Z)</option>
+            <option value="criadoEm">Cadastro mais recente</option>
+            <option value="status">Status do tratamento</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-consultas" id="listaPacientes"></div>
+    </section>
+
+    <!-- ABA 3: CADASTRO -->
+    <section class="secao-aba" id="aba-cadastro">
+      <form class="form-card" id="formPaciente">
+        <h2 class="secao-titulo-interno">Formulário de cadastro de paciente</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="pacienteNome">Nome completo do paciente *</label>
+            <input type="text" id="pacienteNome" class="input-field" required placeholder="Nome da criança">
+          </div>
+          <div class="form-group">
+            <label for="pacienteNascimento">Data de nascimento *</label>
+            <input type="date" id="pacienteNascimento" class="input-field" required>
+          </div>
+          <div class="form-group">
+            <label for="pacienteResponsavel">Nome do responsável *</label>
+            <input type="text" id="pacienteResponsavel" class="input-field" required placeholder="Nome do pai/mãe/tutor">
+          </div>
+          <div class="form-group">
+            <label for="pacienteTelefone">Telefone do responsável *</label>
+            <input type="tel" id="pacienteTelefone" class="input-field" required maxlength="15"
+                   placeholder="(85) 90000-0000" oninput="Global.mascaraTelefone(this)">
+          </div>
+          <div class="form-group">
+            <label for="pacienteCpf">CPF do responsável *</label>
+            <input type="text" id="pacienteCpf" class="input-field" required maxlength="14"
+                   placeholder="000.000.000-00" oninput="Auth.mascaraCPF(this)">
+            <p class="form-hint">É com este CPF que a família entra na Área Restrita.</p>
+          </div>
+          <div class="form-group">
+            <label for="pacienteFoto">Foto do paciente (opcional)</label>
+            <input type="file" id="pacienteFoto" class="input-field" accept="image/*">
+            <p class="form-hint">Imagens de até 200 KB são salvas junto ao cadastro.</p>
+          </div>
+          <div class="form-group">
+            <label for="pacienteTerapia">Tipo de terapia *</label>
+            <select id="pacienteTerapia" class="input-field" required>
+              <option value="Terapia ABA + Psicomotricidade">Terapia ABA + Psicomotricidade</option>
+              <option value="Psicoterapia">Psicoterapia</option>
+              <option value="Terapia Nutricional">Terapia Nutricional</option>
+              <option value="Fonoaudiologia">Fonoaudiologia</option>
+              <option value="Terapia Ocupacional">Terapia Ocupacional</option>
+              <option value="Assistência Jurídica">Assistência Jurídica</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pacientePagamento">Dia de pagamento *</label>
+            <input type="text" id="pacientePagamento" class="input-field" required placeholder="Ex: 05">
+          </div>
+          <div class="form-group">
+            <label for="pacienteStatus">Status do tratamento *</label>
+            <select id="pacienteStatus" class="input-field" required>
+              <option value="Aguardando">Aguardando início</option>
+              <option value="Em Evolução" selected>Em evolução</option>
+              <option value="Alta">Alta terapêutica</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-laranja btn-bloco">Concluir cadastro do paciente</button>
+        <p class="form-status" id="statusPaciente" role="alert"></p>
+      </form>
+    </section>
+
+    <p class="form-hint mt-2">
+      Modo de dados: <strong id="modoDados">verificando...</strong> ·
+      <a href="index.html">Voltar ao site do Instituto</a>
+    </p>
+  </main>
+
+  <!-- MODAL: ATENDIMENTOS DO DIA -->
+  <div class="modal" id="modalDia" role="dialog" aria-modal="true" aria-labelledby="tituloModalDia">
+    <div class="modal-content largo">
+      <div class="modal-header">
+        <h3 id="tituloModalDia">Atendimentos do dia</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-dia" aria-label="Fechar">&times;</button>
+      </div>
+      <div id="listaDia"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ESCOLHER DIA E HORÁRIO (solicitação do profissional) -->
+  <div class="modal" id="modalRemarcacao" role="dialog" aria-modal="true" aria-labelledby="tituloModalRemarcar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalRemarcar">Escolher dia e horário</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-remarcacao" aria-label="Fechar">&times;</button>
+      </div>
+
+      <p class="form-hint mb-1">Solicitação do profissional para o paciente
+        <strong id="nomePacienteRemarcar">—</strong>.</p>
+
+      <form id="formRemarcacao">
+        <div class="form-group">
+          <label for="remarcarData">Dia no calendário *</label>
+          <input type="date" id="remarcarData" class="input-field" required>
+        </div>
+        <div class="form-group">
+          <label for="remarcarHorario">Horário livre *</label>
+          <select id="remarcarHorario" class="input-field" required>
+            <option value="09:00">09:00 — vago</option>
+            <option value="10:00">10:00 — vago</option>
+            <option value="14:00" selected>14:00 — vago</option>
+            <option value="15:00">15:00 — vago</option>
+            <option value="16:30">16:30 — vago</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="remarcarTerapia">Tipo de terapia *</label>
+          <select id="remarcarTerapia" class="input-field" required></select>
+        </div>
+        <div class="form-group">
+          <label for="remarcarProfissional">Profissional *</label>
+          <select id="remarcarProfissional" class="input-field" required></select>
+        </div>
+
+        <!-- CATEGORIA COLORIDA -->
+        <div class="form-group">
+          <label for="remarcarCategoria">Categoria do atendimento (cor) *</label>
+          <select id="remarcarCategoria" class="input-field" required>
+            <option value="particular">🟢 Sessão Particular</option>
+            <option value="reposicao">🟣 Reposição de Crianças</option>
+            <option value="triagem">🟡 Triagem</option>
+            <option value="nutricionista">🥗 Nutricionista</option>
+            <option value="pis">🔵 Sessão PIS</option>
+            <option value="adiado">🟠 Adiado</option>
+            <option value="feriado">🔴 Feriado</option>
+          </select>
+        </div>
+
+        <!-- FREQUÊNCIA: ÚNICO, SEMANAL OU QUINZENAL -->
+        <div class="form-group">
+          <label for="remarcarFrequencia">Frequência da sessão *</label>
+          <select id="remarcarFrequencia" class="input-field" required>
+            <option value="semanal" selected>Semanal (Toda semana)</option>
+            <option value="quinzenal">Quinzenal (A cada 15 dias)</option>
+            <option value="unico">Único (Sessão avulsa ou pontual)</option>
+          </select>
+        </div>
+
+        <div class="modal-acoes">
+          <button type="submit" class="btn-primary">Confirmar agendamento</button>
+          <button type="button" class="btn-outline" data-acao="fechar-remarcacao">Cancelar</button>
+        </div>
+        <p class="form-status" id="statusRemarcacao" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NOVO AGENDAMENTO PELA COORDENAÇÃO -->
+  <div class="modal" id="modalNovoAgendamento" role="dialog" aria-modal="true" aria-labelledby="tituloModalNovoAgendamento">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalNovoAgendamento">Cadastrar Novo Agendamento</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-novo-agendamento" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formNovoAgendamento">
+        <div class="form-group">
+          <label for="novoAgPaciente">Criança / Paciente *</label>
+          <select id="novoAgPaciente" class="input-field" required></select>
+        </div>
+
+        <div class="form-group">
+          <label for="novoAgProfissional">Profissional / Terapeuta *</label>
+          <select id="novoAgProfissional" class="input-field" required></select>
+        </div>
+
+        <div class="form-group">
+          <label for="novoAgDataHora">Data e horário *</label>
+          <input type="datetime-local" id="novoAgDataHora" class="input-field" required>
+        </div>
+
+        <div class="form-group">
+          <label for="novoAgCategoria">Categoria de atendimento (diferenciado por cor) *</label>
+          <select id="novoAgCategoria" class="input-field" required>
+            <option value="reposicao">🟣 Reposição de Crianças</option>
+            <option value="particular" selected>🟢 Sessão Particular</option>
+            <option value="triagem">🟡 Triagem</option>
+            <option value="nutricionista">🥗 Nutricionista</option>
+            <option value="pis">🔵 Sessão PIS</option>
+            <option value="adiado">🟠 Adiado</option>
+            <option value="feriado">🔴 Feriado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="novoAgFrequencia">Frequência *</label>
+          <select id="novoAgFrequencia" class="input-field" required>
+            <option value="semanal" selected>Semanal (Recorrência semanal)</option>
+            <option value="quinzenal">Quinzenal (A cada 15 dias)</option>
+            <option value="unico">Único (Sessão única ou pontual)</option>
+          </select>
+        </div>
+
+        <div class="modal-acoes">
+          <button type="submit" class="btn-laranja">Salvar Agendamento</button>
+          <button type="button" class="btn-outline" data-acao="fechar-novo-agendamento">Cancelar</button>
+        </div>
+        <p class="form-status" id="statusNovoAgendamento" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VISUALIZAR ATESTADO / COMPROVANTE DE FALTA -->
+  <div class="modal" id="modalVerComprovanteCoordenacao" role="dialog" aria-modal="true" aria-labelledby="tituloModalVerComprovanteCoord">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalVerComprovanteCoord">Justificativa de Ausência</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-ver-comprovante-coord" aria-label="Fechar">&times;</button>
+      </div>
+
+      <div style="margin-bottom:1rem">
+        <p style="margin:0; font-weight:700; color:var(--azul-escuro)" id="coordComprovantePaciente">—</p>
+        <p style="margin:.3rem 0; font-size:.9rem; color:var(--texto-principal)">
+          <strong>Motivo:</strong> <span id="coordComprovanteMotivo">—</span>
+        </p>
+        <p style="margin:0; font-size:.8rem; color:var(--texto-suave)" id="coordComprovanteData">—</p>
+      </div>
+
+      <div style="text-align:center; background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+        <img id="coordComprovanteImagem" src="" alt="Comprovante de Falta" style="max-height:350px; max-width:100%; border-radius:8px; margin:0 auto; display:block;">
+      </div>
+
+      <div class="modal-acoes">
+        <button type="button" class="btn-primary" data-acao="fechar-ver-comprovante-coord">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/coordenacao.js"></script>
+</body>
+</html>

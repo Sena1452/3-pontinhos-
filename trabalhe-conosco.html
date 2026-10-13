@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seja do Time Três Pontinhos | Instituto Três Pontinhos</title>
+  <meta name="description" content="Banco de Talentos do Instituto Três Pontinhos: envie seu currículo para estágios e oportunidades na área de inclusão e desenvolvimento infantil em Fortaleza.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo-container" aria-label="Instituto Três Pontinhos — página inicial">
+        <span class="logo-box">
+          <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+            <circle class="face-blue" cx="25" cy="25" r="10" />
+            <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+            <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+            <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+          </svg>
+        </span>
+        <span class="logo-text-group">
+          <span class="sub">Instituto</span>
+          <span class="title">três pontinhos</span>
+          <span class="slogan">Acolher, ajudar e acompanhar</span>
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="siteNav">☰</button>
+      <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="quem-somos.html">Quem somos</a>
+        <a href="terapias.html">Terapias</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="doacao.html">Doação</a>
+        <a href="trabalhe-conosco.html">Trabalhe conosco</a>
+        <a href="contato.html">Contato</a>
+        <a href="login.html" class="btn-acesso">Área Restrita / Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="secao secao--clara">
+    <div class="secao-inner">
+      <p class="hero-eyebrow">Faça parte do Time Três Pontinhos</p>
+      <h1 class="secao-titulo">Banco de Talentos</h1>
+      <p class="secao-sub">No Instituto Três Pontinhos, acreditamos no poder de uma equipe engajada com a
+        inclusão e o desenvolvimento infantil. Mesmo que não tenhamos vagas abertas no momento, queremos
+        conhecer você! Deixe seu currículo em nosso banco de talentos para ser avaliado em futuras
+        seleções.</p>
+    </div>
+  </section>
+  <section class="secao secao--clara">
+    <div class="secao-inner">
+      <form class="form-card" id="formTalento">
+        <h2 class="secao-titulo-interno">Dados pessoais</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="talentoNome">Nome completo / Nome social *</label>
+            <input type="text" id="talentoNome" class="input-field" required placeholder="Seu nome">
+          </div>
+          <div class="form-group">
+            <label for="talentoWhatsapp">WhatsApp para contato *</label>
+            <input type="tel" id="talentoWhatsapp" class="input-field" required maxlength="15"
+                   placeholder="(85) 90000-0000" oninput="Global.mascaraTelefone(this)">
+          </div>
+          <div class="form-group">
+            <label for="talentoNascimento">Data de nascimento *</label>
+            <input type="date" id="talentoNascimento" class="input-field" required>
+          </div>
+          <div class="form-group">
+            <label for="talentoEmail">E-mail para contato *</label>
+            <input type="email" id="talentoEmail" class="input-field" required placeholder="voce@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="talentoLocal">Bairro e cidade onde mora *</label>
+          <input type="text" id="talentoLocal" class="input-field" required placeholder="Ex: Joaquim Távora, Fortaleza">
+        </div>
+
+        <h2 class="secao-titulo-interno">Formação acadêmica e disponibilidade</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="talentoCurso">Qual o seu curso de graduação? *</label>
+            <select id="talentoCurso" class="input-field" required>
+              <option value="">Selecione o curso</option>
+              <option>Psicologia</option>
+              <option>Pedagogia / Psicopedagogia</option>
+              <option>Terapia Ocupacional</option>
+              <option>Fonoaudiologia</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="talentoPeriodo">Semestre / período atual *</label>
+            <input type="text" id="talentoPeriodo" class="input-field" required placeholder="Ex: 5º semestre">
+          </div>
+          <div class="form-group">
+            <label for="talentoInstituicao">Instituição de ensino *</label>
+            <input type="text" id="talentoInstituicao" class="input-field" required placeholder="Ex: Unifametro">
+          </div>
+          <div class="form-group">
+            <label for="talentoTurno">Turno em que estuda *</label>
+            <select id="talentoTurno" class="input-field" required>
+              <option value="">Selecione o turno</option>
+              <option>Manhã</option>
+              <option>Tarde</option>
+              <option>Noite</option>
+              <option>EAD / Flexível</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-hint" style="font-weight:700">Disponibilidade de horário para estagiar (marque todas as opções) *</span>
+          <label class="form-hint" style="display:block">
+            <input type="checkbox" value="Manhã (08h às 12h)" class="talento-disponibilidade"> Manhã (08h às 12h)</label>
+          <label class="form-hint" style="display:block">
+            <input type="checkbox" value="Tarde (13h às 17h)" class="talento-disponibilidade"> Tarde (13h às 17h)</label>
+          <label class="form-hint" style="display:block">
+            <input type="checkbox" value="Integral" class="talento-disponibilidade"> Integral</label>
+        </div>
+
+        <button type="submit" class="btn-laranja btn-bloco">Enviar meu currículo</button>
+        <p class="form-status" id="statusTalento" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Como podemos ajudar?</h4>
+        <ul class="footer-links">
+          <li><a href="doacao.html">Quero doar</a></li>
+          <li><a href="quem-somos.html">Quem somos</a></li>
+          <li><a href="terapias.html">Terapias Infantis</a></li>
+          <li><a href="agenda.html">Agenda do Instituto</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="trabalhe-conosco.html">Trabalhe conosco</a></li>
+          <li><a href="login.html">Área Restrita / Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-info">
+        <p><strong>Instituto Três Pontinhos</strong> | CNPJ: 59.795.570/0001-68</p>
+        <p>Endereço: Rua Padre Valdevino, 294 - Joaquim Távora, Fortaleza-CE</p>
+        <p>WhatsApp: <a href="https://wa.me/5585992005743">(85) 99200-5743</a></p>
+        <p>E-mail: <a href="mailto:trespontinhos.contato@gmail.com">trespontinhos.contato@gmail.com</a></p>
+        <p class="copy">© <span data-ano>2026</span>. Instituto Três Pontinhos | Termos e Condições | Política de Privacidade</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/global.js"></script>
+  <script>
+    Global.iniciarSite('trabalhe-conosco.html');
+
+    document.getElementById('formTalento').addEventListener('submit', function (evento) {
+      evento.preventDefault();
+
+      const disponibilidades = Array.prototype.slice
+        .call(document.querySelectorAll('.talento-disponibilidade:checked'))
+        .map(function (caixa) { return caixa.value; });
+
+      const status = document.getElementById('statusTalento');
+
+      if (!disponibilidades.length) {
+        status.className = 'form-status erro';
+        status.textContent = '⚠️ Marque ao menos uma disponibilidade de horário.';
+        return;
+      }
+
+      const texto =
+        'Olá! Quero fazer parte do Banco de Talentos do Instituto Três Pontinhos.\n' +
+        'Nome: ' + document.getElementById('talentoNome').value + '\n' +
+        'WhatsApp: ' + document.getElementById('talentoWhatsapp').value + '\n' +
+        'Nascimento: ' + document.getElementById('talentoNascimento').value + '\n' +
+        'E-mail: ' + document.getElementById('talentoEmail').value + '\n' +
+        'Onde mora: ' + document.getElementById('talentoLocal').value + '\n' +
+        'Curso: ' + document.getElementById('talentoCurso').value + '\n' +
+        'Período: ' + document.getElementById('talentoPeriodo').value + '\n' +
+        'Instituição: ' + document.getElementById('talentoInstituicao').value + '\n' +
+        'Turno: ' + document.getElementById('talentoTurno').value + '\n' +
+        'Disponibilidade: ' + disponibilidades.join(', ');
+
+      status.className = 'form-status ok';
+      status.textContent = 'Prontinho! Abrindo o WhatsApp para enviar seus dados...';
+
+      setTimeout(function () {
+        window.open('https://wa.me/5585992005743?text=' + encodeURIComponent(texto), '_blank');
+      }, 400);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Instituto Três Pontinhos</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      background: #0f172a; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      padding: 1rem; 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .card-login { 
+      background: #ffffff; 
+      padding: 2.5rem; 
+      border-radius: var(--raio-borda, 12px); 
+      width: 100%; 
+      max-width: 420px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25); 
+    }
+    .header-logo-card {
+      background: var(--azul-vibrante, #0ea5e9); 
+      padding: 1.2rem; 
+      border-radius: 12px; 
+      margin-bottom: 1.5rem; 
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .form-group { 
+      margin-bottom: 1.2rem; 
+    }
+    .form-group label { 
+      display: block; 
+      font-weight: 700; 
+      font-size: 0.85rem; 
+      margin-bottom: 0.4rem; 
+      color: var(--azul-escuro, #0f172a); 
+    }
+    .input-field { 
+      width: 100%; 
+      padding: 0.75rem; 
+      border: 1px solid var(--cor-borda, #e2e8f0); 
+      border-radius: 8px; 
+      font-size: 0.95rem; 
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--azul-vibrante, #0ea5e9);
+    }
+    .btn-entrar { 
+      width: 100%; 
+      background: var(--azul-vibrante, #0ea5e9); 
+      color: white; 
+      border: none; 
+      padding: 0.85rem; 
+      border-radius: 8px; 
+      font-weight: 800; 
+      cursor: pointer; 
+      font-size: 1rem; 
+      margin-top: 0.5rem; 
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .btn-entrar:hover { 
+      background: #0284c7; 
+    }
+    .btn-entrar:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-login">
+    <div class="header-logo-card">
+      <a href="index.html" class="brand-logo-container">
+        <div class="logo-box">
+          <svg class="logo-face-svg" viewBox="0 0 100 80">
+            <circle class="face-blue" cx="25" cy="25" r="10" />
+            <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+            <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+            <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+          </svg>
+        </div>
+        <div class="logo-text-group">
+          <span class="sub">Instituto</span>
+          <span class="title">três pontinhos</span>
+        </div>
+      </a>
+    </div>
+
+    <h2 style="color: var(--azul-escuro, #0f172a); margin-bottom: 0.3rem;">Acesso ao Sistema</h2>
+    <p style="color: var(--texto-suave, #64748b); font-size: 0.85rem; margin-bottom: 1.5rem;">Informe o seu CPF e senha para acessar.</p>
+
+    <form onsubmit="autenticarLoginCPF(event)">
+      <div class="form-group">
+        <label for="campoCPF">CPF *</label>
+        <input 
+          type="text" 
+          id="campoCPF" 
+          class="input-field" 
+          required 
+          placeholder="000.000.000-00" 
+          maxlength="14"
+          oninput="mascaraCPF(this)"
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="campoSenha">Senha *</label>
+        <input type="password" id="campoSenha" class="input-field" required placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="btn-entrar">Entrar no Sistema</button>
+    </form>
+  </div>
+
+  <script>
+    function mascaraCPF(input) {
+      let v = input.value.replace(/\D/g, "");
+      v = v.replace(/(\d{3})(\d)/, "$1.$2");
+      v = v.replace(/(\d{3})(\d)/, "$1.$2");
+      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      input.value = v;
+    }
+
+    function autenticarLoginCPF(e) {
+      e.preventDefault();
+      
+      const logo = document.querySelector('.brand-logo-container');
+      if (logo) logo.classList.add('piscando');
+
+      // Extrai apenas os números do CPF digitado
+      const cpfLimpo = document.getElementById('campoCPF').value.replace(/\D/g, "");
+
+      setTimeout(() => {
+        // Redirecionamento automático baseado no CPF
+        if (cpfLimpo === "11111111111") {
+          window.location.href = 'diretor.html';
+        } else if (cpfLimpo === "22222222222") {
+          window.location.href = 'coordenacao.html';
+        } else if (cpfLimpo === "33333333333") {
+          window.location.href = 'profissional.html';
+        } else {
+          // Qualquer outro CPF (ex: 444.444.444-44) vai para a área do paciente
+          window.location.href = 'paciente.html';
+        }
+      }, 150);
+    }
+  </script>
+
+</body>
+</html>

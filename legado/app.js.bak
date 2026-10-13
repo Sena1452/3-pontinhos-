@@ -1,0 +1,54 @@
+// 1. EFEITO SCROLL REVEAL (Aparecer ao Rolar)
+function verificarScroll() {
+  const elementos = document.querySelectorAll('.reveal');
+  const alturaJanela = window.innerHeight;
+
+  elementos.forEach(el => {
+    const topoElemento = el.getBoundingClientRect().top;
+    if (topoElemento < alturaJanela - 100) {
+      el.classList.add('visible');
+    }
+  });
+}
+
+window.addEventListener('scroll', verificarScroll);
+window.addEventListener('DOMContentLoaded', verificarScroll);
+
+// 2. SIMULADOR DE ACOMPANHAMENTO
+function atualizarSimulador(valor) {
+  document.getElementById('qtd-sessoes').innerText = valor;
+  const porcentagem = Math.round((valor / 12) * 100);
+  
+  const barra = document.getElementById('barra-simulada');
+  const texto = document.getElementById('texto-evolucao');
+  const dica = document.getElementById('dica-simulado');
+
+  barra.style.width = `${porcentagem}%`;
+
+  if (valor <= 3) {
+    texto.innerText = `Ritmo Inicial (${porcentagem}%)`;
+    dica.innerText = 'Recomendado para avaliações pontuais ou início de plano.';
+  } else if (valor <= 7) {
+    texto.innerText = `Constância Ideal (${porcentagem}%)`;
+    dica.innerText = 'Excelente para acompanhamento contínuo e evolução constante.';
+  } else {
+    texto.innerText = `Acompanhamento Intensivo (${porcentagem}%)`;
+    dica.innerText = 'Ideal para tratamentos de alta prioridade ou multiprofissionais.';
+  }
+}
+
+// 3. CARROSSEL DE DIFERENCIAIS
+let slideAtual = 0;
+
+function mudarSlide(direcao) {
+  const slides = document.querySelectorAll('.slide');
+  slides[slideAtual].classList.remove('active');
+
+  slideAtual = (slideAtual + direcao + slides.length) % slides.length;
+  slides[slideAtual].classList.add('active');
+}
+
+// Transição automática do carrossel a cada 5 segundos
+setInterval(() => {
+  mudarSlide(1);
+}, 5000);

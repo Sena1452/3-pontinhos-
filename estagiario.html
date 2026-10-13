@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Estagiário / AT | Instituto Três Pontinhos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/banco.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/global.js"></script>
+  <script>window.TP_SESSAO = Auth.exigir(['estagiario']);</script>
+</head>
+<body>
+
+  <header class="app-header">
+    <a href="index.html" class="brand-logo-container" aria-label="Ir para o site do Instituto">
+      <span class="logo-box">
+        <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+          <circle class="face-blue" cx="25" cy="25" r="10" />
+          <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+          <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+          <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+        </svg>
+      </span>
+      <span class="logo-text-group">
+        <span class="sub">Instituto</span>
+        <span class="title">três pontinhos</span>
+      </span>
+    </a>
+
+    <div class="user-nav">
+      <span class="badge-perfil" data-usuario-perfil>Estagiário</span>
+      <span class="nome" data-usuario-nome>—</span>
+      <a href="login.html" class="btn-ghost" data-acao="sair">Sair</a>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <!-- SEÇÃO: CONSULTAS FINALIZADAS HOJE (PÓS-CONSULTA) -->
+    <div class="welcome-card" style="margin-bottom:2rem; background: linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%);">
+      <div>
+        <h2 style="color:#fff;">Área do Estagiário & Acompanhante Terapêutico (AT)</h2>
+        <p style="color:rgba(255,255,255,0.9); max-width:750px;">
+          Emita relatórios detalhados após a finalização de cada consulta do dia e acompanhe a evolução de cada criança. 
+          Estes relatórios são restritos à equipe multiprofissional e coordenação.
+        </p>
+      </div>
+    </div>
+
+    <div class="cabecalho-pagina">
+      <h2>⏱️ Consultas Finalizadas Hoje (Pós-Consulta)</h2>
+    </div>
+    <div class="grid-consultas mb-2" id="listaConsultasFinalizadas"></div>
+
+    <div class="cabecalho-pagina">
+      <h2>👶 Crianças Cadastradas & Prontuários</h2>
+      <div style="display:flex; gap:.6rem; align-items:center; flex-wrap:wrap">
+        <input type="text" id="buscaPaciente" class="input-field" placeholder="Buscar criança por nome..." style="width:280px">
+      </div>
+    </div>
+
+    <div class="grid-consultas" id="listaPacientesEstagiario"></div>
+
+    <p class="form-hint mt-2">
+      Modo de dados: <strong id="modoDados">verificando...</strong> ·
+      <a href="index.html">Voltar ao site do Instituto</a>
+    </p>
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: FICHA PÓS-CONSULTA (EDITÁVEL)
+       ========================================================================= -->
+  <div class="modal" id="modalFichaEvolucao" role="dialog" aria-modal="true" aria-labelledby="tituloModalFicha">
+    <div class="modal-content largo">
+      <div class="modal-header">
+        <h3 id="tituloModalFicha">Ficha Pós-Consulta / Relatório Clínico</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-ficha" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formFichaEvolucao">
+        <input type="hidden" id="fichaPacienteId">
+        <input type="hidden" id="fichaPacienteNome">
+        <input type="hidden" id="fichaAgendamentoId">
+
+        <div style="background:var(--azul-claro); padding:1rem; border-radius:8px; margin-bottom:1.5rem">
+          <p style="margin:0; font-weight:700; color:var(--azul-escuro)">
+            Paciente: <span id="fichaNomeDisplay">—</span>
+          </p>
+          <p style="margin:0; font-size:.85rem; color:var(--texto-suave)" id="fichaTerapiaDisplay">—</p>
+        </div>
+
+        <div class="form-grid" style="margin-bottom:1.5rem">
+          <div class="form-group">
+            <label for="fichaData">Data da Sessão *</label>
+            <input type="date" id="fichaData" class="input-field" required>
+          </div>
+          <div class="form-group">
+            <label for="fichaAtendente">Nome do Estagiário / AT *</label>
+            <input type="text" id="fichaAtendente" class="input-field" required placeholder="Seu nome completo">
+          </div>
+        </div>
+
+        <!-- =====================================================================
+             [INÍCIO DA ÁREA EDITÁVEL DA FICHA - ADICIONE OU EDITE OS CAMPOS AQUI]
+             ===================================================================== -->
+        <h4 class="secao-titulo-interno" style="border-bottom:1px solid var(--cor-borda); padding-bottom:.5rem">
+          Avaliação de Desempenho (Escala de 1 a 5)
+        </h4>
+
+        <!-- CRITÉRIO 1: Atenção e Engajamento -->
+        <div class="form-group mb-1">
+          <label for="critAtencao">1. Atenção e Engajamento na Atividade *</label>
+          <select id="critAtencao" class="input-field" required>
+            <option value="">Selecione a nota...</option>
+            <option value="1">1 - Baixo / Muita dispersão</option>
+            <option value="2">2 - Parcial com suporte constante</option>
+            <option value="3">3 - Regular / Engajamento moderado</option>
+            <option value="4">4 - Bom engajamento na maior parte do tempo</option>
+            <option value="5">5 - Excelente foco e autonomia</option>
+          </select>
+        </div>
+
+        <!-- CRITÉRIO 2: Comunicação e Interação -->
+        <div class="form-group mb-1">
+          <label for="critComunicacao">2. Comunicação e Interação Social *</label>
+          <select id="critComunicacao" class="input-field" required>
+            <option value="">Selecione a nota...</option>
+            <option value="1">1 - Ausente / Resposta nula ao estímulo</option>
+            <option value="2">2 - Mínima com mediação direta</option>
+            <option value="3">3 - Comunicação funcional (gestual/verbal/PECS)</option>
+            <option value="4">4 - Interação espontânea frequente</option>
+            <option value="5">5 - Comunicação rica e autônoma</option>
+          </select>
+        </div>
+
+        <!-- CRITÉRIO 3: Regulação Emocional -->
+        <div class="form-group mb-1">
+          <label for="critRegulacao">3. Regulação Emocional e Comportamental *</label>
+          <select id="critRegulacao" class="input-field" required>
+            <option value="">Selecione a nota...</option>
+            <option value="1">1 - Crises frequentes / Alta desregulação</option>
+            <option value="2">2 - Agitação moderada</option>
+            <option value="3">3 - Regulado com suporte pontual</option>
+            <option value="4">4 - Boa regulação emocional</option>
+            <option value="5">5 - Totalmente calmo e colaborativo</option>
+          </select>
+        </div>
+
+        <!-- CRITÉRIO 4: Coordenação Motora -->
+        <div class="form-group mb-1">
+          <label for="critMotricidade">4. Coordenação Motora e Execução do Circuito *</label>
+          <select id="critMotricidade" class="input-field" required>
+            <option value="">Selecione a nota...</option>
+            <option value="1">1 - Dificuldade motora acentuada</option>
+            <option value="2">2 - Necessitou de auxílio físico total</option>
+            <option value="3">3 - Executou com auxílio leve</option>
+            <option value="4">4 - Boa precisão e equilíbrio</option>
+            <option value="5">5 - Excelente desempenho motor</option>
+          </select>
+        </div>
+
+        <!-- CRITÉRIO 5: Cumprimento dos Objetivos -->
+        <div class="form-group mb-1">
+          <label for="critObjetivos">5. Cumprimento dos Objetivos da Sessão (%) *</label>
+          <select id="critObjetivos" class="input-field" required>
+            <option value="">Selecione o percentual...</option>
+            <option value="1">1 - Atingiu até 25% do plano</option>
+            <option value="2">2 - Atingiu entre 26% e 50%</option>
+            <option value="3">3 - Atingiu entre 51% e 75%</option>
+            <option value="4">4 - Atingiu entre 76% e 90%</option>
+            <option value="5">5 - 100% dos objetivos concluídos</option>
+          </select>
+        </div>
+
+        <!-- OBSERVAÇÕES QUALITATIVAS -->
+        <div class="form-group">
+          <label for="fichaObservacoes">Observações e Detalhes da Sessão *</label>
+          <textarea id="fichaObservacoes" class="input-field" rows="4" required
+            placeholder="Descreva avanços, comportamentos observados, respostas aos reforçadores e orientações..."></textarea>
+        </div>
+        <!-- =====================================================================
+             [FIM DA ÁREA EDITÁVEL DA FICHA]
+             ===================================================================== -->
+
+        <div class="modal-acoes">
+          <button type="submit" class="btn-laranja">Salvar Registro e Atualizar Gráfico</button>
+          <button type="button" class="btn-outline" data-acao="fechar-ficha">Cancelar</button>
+        </div>
+        <p class="form-status" id="statusFicha" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: GRÁFICO DE EVOLUÇÃO
+       ========================================================================= -->
+  <div class="modal" id="modalGraficoEvolucao" role="dialog" aria-modal="true" aria-labelledby="tituloModalGrafico">
+    <div class="modal-content largo">
+      <div class="modal-header">
+        <h3 id="tituloModalGrafico">Gráfico de Evolução do Paciente</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-grafico" aria-label="Fechar">&times;</button>
+      </div>
+
+      <div style="margin-bottom:1rem">
+        <p style="margin:0; font-weight:700; color:var(--azul-escuro)" id="graficoNomePaciente">—</p>
+        <p style="margin:0; font-size:.85rem; color:var(--texto-suave)" id="graficoTotalSessoes">—</p>
+      </div>
+
+      <div class="box-chart" style="margin-bottom:1.5rem">
+        <canvas id="canvasEvolucaoPaciente" height="280"></canvas>
+      </div>
+
+      <h4 class="secao-titulo-interno">Histórico de Fichas Registradas</h4>
+      <div class="tabela-scroll">
+        <table class="app-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Avaliador</th>
+              <th>Atenção</th>
+              <th>Comunicação</th>
+              <th>Regulação</th>
+              <th>Motricidade</th>
+              <th>Objetivos</th>
+              <th>Observações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaHistoricoEvolucao"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/estagiario.js"></script>
+</body>
+</html>

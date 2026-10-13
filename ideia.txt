@@ -1,0 +1,77 @@
+INSTITUTO TRÊS PONTINHOS — FLUXO DO SISTEMA
+===========================================
+
+SITE PÚBLICO
+------------
+  index.html ──► quem-somos.html
+             ──► terapias.html
+             ──► agenda.html
+             ──► doacao.html
+             ──► trabalhe-conosco.html
+             ──► contato.html
+             ──► login.html  («Área Restrita / Login» no menu)
+
+LOGIN (login.html)
+------------------
+  CPF + senha  ──►  Auth.login(cpf, senha)
+                    │
+                    ├─ valida contra a coleção "usuarios" (Banco)
+                    ├─ grava a sessão em localStorage: tp_sessao
+                    └─ redireciona conforme o perfil:
+
+   ┌──────────────────┬────────────────────┬──────────────────┐
+   │ CPF (demo)       │ Perfil             │ Painel           │
+   ├──────────────────┼────────────────────┼──────────────────┤
+   │ 111.111.111-11   │ diretor            │ diretor.html     │
+   │ 222.222.222-22   │ coordenacao        │ coordenacao.html │
+   │ 333.333.333-33   │ profissional       │ profissional.html│
+   │ qualquer outro   │ cliente            │ cliente.html     │
+   └──────────────────┴────────────────────┴──────────────────┘
+   (senha de demonstração: 123)
+
+PAINÉIS ── guard de rota: Auth.exigir([perfil]) no topo de cada página
+
+  [ cliente.html ]
+   • Próximos agendamentos e histórico
+   • «+ Agendar Nova Consulta» ──┐
+   • Cancelar consulta           │ grava em Banco('agendamentos')
+   • Baixar ficha (.txt)         │ status «Aguardando»
+                                 ▼
+  [ coordenacao.html ]
+   • 🗓️ Calendário mensal DINÂMICO (gerado dos agendamentos)
+   • Clique no dia ──► confirmar / cancelar atendimento
+   • 👥 Pacientes cadastrados (foto, idade, responsável, terapia)
+   • ➕ Cadastro de paciente ──► cria também o acesso do responsável
+   • 📩 Aviso de solicitação do profissional ──► escolher dia/horário
+
+  [ profissional.html ]
+   • Tabela dos atendimentos do próprio profissional (+ filtro por data)
+   • Marcar entrada na sala (bolinha verde/cinza)
+   • Concluir atendimento ──► entra na receita realizada da diretoria
+   • «🗓️ Próxima consulta» ──► grava em Banco('solicitacoes')
+
+  [ diretor.html ]
+   • 📊 KPIs calculados: receita realizada, previsão, despesas, resultado
+   • Gráficos (Chart.js): receita/mês, despesas/categoria, atendimentos/terapia
+   • 💰 Financeiro: lançar e excluir despesas, filtrar por mês
+   • 👨‍⚕️ Profissionais: cadastrar (cria o acesso) e listar
+
+CAMADA DE DADOS (js/banco.js)
+-----------------------------
+  Banco.listar / obter / salvar / remover   (sempre assíncrono)
+
+  modo «local»     ──► localStorage  (chaves tp_usuarios, tp_agendamentos,
+                                       tp_pacientes, tp_profissionais,
+                                       tp_solicitacoes, tp_financeiro)
+  modo «firebase»  ──► Firestore: instituto/estado/<colecao>/itens/<id>
+                       (ativado em js/firebase-config.js: ativo = true)
+
+  Sessão: tp_sessao   •   «Sair» remove só a sessão, nunca os dados
+
+CICLO COMPLETO (o fluxo que a apresentação deve mostrar)
+-------------------------------------------------------
+  Coordenação cadastra paciente
+      └► Cliente agenda consulta (Aguardando)
+           └► Coordenação confirma no calendário (Confirmado)
+                └► Profissional registra entrada e conclui (Concluído)
+                     └► Diretoria vê receita, gráficos e resultado atualizados

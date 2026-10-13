@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Cliente | Instituto Três Pontinhos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script src="js/firebase-config.js"></script>
+  <script src="js/banco.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/global.js"></script>
+  <!-- Guard de rota: roda antes do corpo aparecer -->
+  <script>window.TP_SESSAO = Auth.exigir(['cliente']);</script>
+</head>
+<body>
+
+  <header class="app-header">
+    <a href="index.html" class="brand-logo-container" aria-label="Ir para o site do Instituto">
+      <span class="logo-box">
+        <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+          <circle class="face-blue" cx="25" cy="25" r="10" />
+          <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+          <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+          <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+        </svg>
+      </span>
+      <span class="logo-text-group">
+        <span class="sub">Instituto</span>
+        <span class="title">três pontinhos</span>
+      </span>
+    </a>
+
+    <div class="user-nav">
+      <span class="badge-perfil" data-usuario-perfil>Cliente</span>
+      <span class="nome" data-usuario-nome>—</span>
+      <a href="login.html" class="btn-ghost" data-acao="sair">Sair</a>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="welcome-card">
+      <div>
+        <h2>Olá, <span data-usuario-nome>—</span>!</h2>
+        <p>Esta é a sua área de atendimento: acompanhe consultas, justifique faltas com envio de documento e realize pagamentos com agilidade.</p>
+      </div>
+      <button type="button" class="btn-laranja" data-acao="agendar">+ Agendar Nova Consulta</button>
+    </div>
+
+    <!-- =========================================================================
+         ÁREA DE PAGAMENTO: PIX E BOLETO VIA WHATSAPP
+         ========================================================================= -->
+    <section class="card-pagamento-pix">
+      <div class="pix-grid">
+        <div class="pix-qr-box">
+          <div id="pixQrContainer">
+            <!-- QR Code renderizado via SVG ou imagem configurável -->
+            <svg viewBox="0 0 100 100" width="160" height="160" style="background:#fff; padding:6px; border-radius:8px;">
+              <!-- Padrão visual elegante de QR Code para demonstração e produção -->
+              <rect width="100" height="100" fill="#ffffff"/>
+              <!-- Quadrado topo esquerdo -->
+              <rect x="10" y="10" width="24" height="24" fill="#0f172a"/>
+              <rect x="14" y="14" width="16" height="16" fill="#ffffff"/>
+              <rect x="18" y="18" width="8" height="8" fill="#1a73e8"/>
+              <!-- Quadrado topo direito -->
+              <rect x="66" y="10" width="24" height="24" fill="#0f172a"/>
+              <rect x="70" y="14" width="16" height="16" fill="#ffffff"/>
+              <rect x="74" y="18" width="8" height="8" fill="#1a73e8"/>
+              <!-- Quadrado inferior esquerdo -->
+              <rect x="10" y="66" width="24" height="24" fill="#0f172a"/>
+              <rect x="14" y="70" width="16" height="16" fill="#ffffff"/>
+              <rect x="18" y="74" width="8" height="8" fill="#1a73e8"/>
+              <!-- Módulos de dados dinâmicos -->
+              <rect x="40" y="12" width="6" height="6" fill="#ff7a00"/>
+              <rect x="50" y="16" width="8" height="6" fill="#0f172a"/>
+              <rect x="42" y="26" width="6" height="8" fill="#1a73e8"/>
+              <rect x="52" y="30" width="6" height="6" fill="#ff7a00"/>
+              <rect x="12" y="42" width="6" height="8" fill="#0f172a"/>
+              <rect x="22" y="46" width="8" height="6" fill="#1a73e8"/>
+              <rect x="36" y="40" width="28" height="20" fill="#0ea5e9" rx="4"/>
+              <text x="50" y="54" font-size="7" fill="#fff" font-weight="bold" text-anchor="middle" font-family="sans-serif">PIX ONG</text>
+              <rect x="70" y="42" width="8" height="6" fill="#ff7a00"/>
+              <rect x="82" y="46" width="6" height="8" fill="#0f172a"/>
+              <rect x="40" y="66" width="8" height="6" fill="#0f172a"/>
+              <rect x="52" y="72" width="6" height="8" fill="#1a73e8"/>
+              <rect x="68" y="66" width="6" height="6" fill="#ff7a00"/>
+              <rect x="78" y="72" width="10" height="6" fill="#0f172a"/>
+              <rect x="66" y="82" width="8" height="6" fill="#1a73e8"/>
+              <rect x="42" y="82" width="14" height="6" fill="#0f172a"/>
+            </svg>
+          </div>
+          <small style="color:var(--texto-suave); font-weight:700; margin-top:.4rem">Pague com PIX</small>
+        </div>
+
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem">
+            <h3 style="color:var(--azul-escuro); margin:0;">💳 Pagamento de Mensalidade & Sessões</h3>
+            <span class="badge-status status-confirmado" id="statusMensalidadeCliente">Em dia</span>
+          </div>
+          <p style="color:var(--texto-suave); font-size:.9rem; margin:.4rem 0">
+            Você pode quitar suas sessões ou mensalidades diretamente via <strong>PIX</strong> (instantâneo) ou solicitar a emissão do <strong>Boleto Bancário</strong> à nossa equipe administrativa.
+          </p>
+
+          <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:.8rem 1rem; margin:.8rem 0;">
+            <div style="font-size:.8rem; color:var(--texto-suave); font-weight:700">CHAVE PIX (CNPJ DO INSTITUTO):</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; margin-top:.2rem">
+              <span style="font-size:1.05rem; font-weight:800; color:var(--azul-vibrante);" id="displayChavePix">59.795.570/0001-68</span>
+              <button type="button" class="btn-outline btn-pequeno" id="btnCopiarPix">📋 Copiar Chave PIX</button>
+            </div>
+            <div class="pix-copia-box" id="displayCopiaECola" style="display:none;"></div>
+          </div>
+
+          <div style="display:flex; gap:.8rem; align-items:center; flex-wrap:wrap;">
+            <button type="button" class="btn-primary btn-pequeno" id="btnCopiarCopiaECola">🔗 Copiar Código Copia e Cola</button>
+            <a href="#" target="_blank" rel="noopener" class="btn-whatsapp-pagamento" id="btnSolicitarBoletoWhatsApp">
+              💬 Solicitar Boleto via WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <h3 class="secao-titulo-interno">Próximos agendamentos</h3>
+    <div class="grid-consultas" id="listaProximos"></div>
+
+    <h3 class="secao-titulo-interno">Histórico de atendimentos</h3>
+    <div class="grid-consultas" id="listaHistorico"></div>
+
+    <p class="form-hint mt-2">
+      Modo de dados: <strong id="modoDados">verificando...</strong> ·
+      <a href="index.html">Voltar ao site do Instituto</a>
+    </p>
+  </main>
+
+  <!-- MODAL DE NOVO AGENDAMENTO COM MARCAÇÃO DE FREQUÊNCIA -->
+  <div class="modal" id="modalAgendamento" role="dialog" aria-modal="true" aria-labelledby="tituloModalAgendar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalAgendar">Agendar consulta</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-agendamento" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formAgendamento">
+        <div class="form-group">
+          <label for="selectEspecialidade">Especialidade / terapia *</label>
+          <select id="selectEspecialidade" class="input-field" required>
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="selectProfissional">Profissional *</label>
+          <select id="selectProfissional" class="input-field" required>
+            <option value="">Selecione a especialidade primeiro</option>
+          </select>
+        </div>
+
+        <!-- Tipo de Atendimento / Categoria -->
+        <div class="form-group">
+          <label for="selectCategoriaTipo">Tipo de atendimento *</label>
+          <select id="selectCategoriaTipo" class="input-field" required>
+            <option value="particular">Sessão Particular</option>
+            <option value="reposicao">Reposição de Crianças</option>
+            <option value="triagem">Triagem</option>
+            <option value="nutricionista">Nutricionista</option>
+            <option value="pis">Sessão PIS</option>
+            <option value="adiado">Adiado</option>
+          </select>
+        </div>
+
+        <!-- MARCAÇÃO OBRIGATÓRIA DE FREQUÊNCIA (ÚNICO, SEMANAL OU QUINZENAL) -->
+        <div class="form-group">
+          <label for="selectFrequencia">Frequência do agendamento *</label>
+          <select id="selectFrequencia" class="input-field" required>
+            <option value="semanal" selected>Semanal (Toda semana no mesmo horário)</option>
+            <option value="quinzenal">Quinzenal (A cada 15 dias)</option>
+            <option value="unico">Único (Apenas esta sessão)</option>
+          </select>
+          <p class="form-hint">Indique se o atendimento é único, semanal ou quinzenal.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="campoDataAgendamento">Data e horário *</label>
+          <input type="datetime-local" id="campoDataAgendamento" class="input-field" required>
+          <p class="form-hint">As sessões duram até 40 minutos.</p>
+        </div>
+
+        <button type="submit" class="btn-laranja btn-bloco">Confirmar agendamento</button>
+        <p class="form-status" id="statusAgendamento" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: JUSTIFICAR FALTA COM FOTO DE DOCUMENTO/ATESTADO -->
+  <div class="modal" id="modalJustificativa" role="dialog" aria-modal="true" aria-labelledby="tituloModalJustificativa">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalJustificativa">Justificar Falta na Consulta</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-justificativa" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formJustificativa">
+        <input type="hidden" id="justificativaAgendamentoId">
+
+        <div style="background:var(--azul-claro); padding:1rem; border-radius:8px; margin-bottom:1.2rem">
+          <p style="margin:0; font-weight:700; color:var(--azul-escuro)" id="justificativaConsultaInfo">—</p>
+          <p style="margin:0; font-size:.85rem; color:var(--texto-suave)">
+            O envio de atestado ou justificativa nos ajuda a reorganizar as terapias e liberar vagas de reposição.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="campoMotivoFalta">Motivo da falta / ausência *</label>
+          <textarea id="campoMotivoFalta" class="input-field" rows="3" required
+            placeholder="Ex: Consulta médica de rotina, indisposição de saúde, imprevisto escolar..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="campoFotoDocumento">Foto do comprovante / documento (atestado ou declaração) *</label>
+          <input type="file" id="campoFotoDocumento" class="input-field" accept="image/*" required>
+          <p class="form-hint">Tire uma foto nítida do atestado ou documento médico (até 400 KB).</p>
+          
+          <div id="previewFotoContainer" style="margin-top:.8rem; display:none; text-align:center;">
+            <p style="font-size:.8rem; font-weight:700; color:var(--texto-suave); margin-bottom:.3rem">Pré-visualização do documento:</p>
+            <img id="previewFotoComprovante" src="" alt="Comprovante" style="max-height:180px; max-width:100%; border-radius:8px; border:1px solid #cbd5e1; margin:0 auto; display:block;">
+          </div>
+        </div>
+
+        <div class="modal-acoes">
+          <button type="submit" class="btn-laranja">Enviar Justificativa</button>
+          <button type="button" class="btn-outline" data-acao="fechar-justificativa">Voltar</button>
+        </div>
+        <p class="form-status" id="statusJustificativa" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VISUALIZAR COMPROVANTE ENVIADO -->
+  <div class="modal" id="modalVerComprovante" role="dialog" aria-modal="true" aria-labelledby="tituloModalVerComprovante">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="tituloModalVerComprovante">Comprovante de Falta Enviado</h3>
+        <button type="button" class="btn-fechar" data-acao="fechar-ver-comprovante" aria-label="Fechar">&times;</button>
+      </div>
+
+      <div style="margin-bottom:1rem">
+        <p style="margin:0; font-weight:700; color:var(--azul-escuro)" id="verComprovanteTitulo">—</p>
+        <p style="margin:.3rem 0; font-size:.9rem; color:var(--texto-principal)">
+          <strong>Motivo informado:</strong> <span id="verComprovanteMotivo">—</span>
+        </p>
+        <p style="margin:0; font-size:.8rem; color:var(--texto-suave)" id="verComprovanteData">—</p>
+      </div>
+
+      <div style="text-align:center; background:#f8fafc; padding:1rem; border-radius:8px; border:1px solid #e2e8f0;">
+        <img id="verComprovanteImagem" src="" alt="Foto do documento" style="max-height:350px; max-width:100%; border-radius:8px; margin:0 auto; display:block;">
+      </div>
+
+      <div class="modal-acoes">
+        <button type="button" class="btn-primary" data-acao="fechar-ver-comprovante">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/cliente.js"></script>
+</body>
+</html>

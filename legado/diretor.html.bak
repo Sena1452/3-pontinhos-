@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diretoria Geral - Instituto Três Pontinhos</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js para geração de gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    header { background-color: var(--azul-vibrante); padding: 0.8rem 6%; display: flex; justify-content: space-between; align-items: center; color: white; }
+    .container { padding: 2rem 4%; max-width: 1400px; margin: 0 auto; }
+
+    .menu-diretoria { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.5rem; flex-wrap: wrap; }
+    .btn-nav-dir { background: none; border: none; font-size: 0.95rem; font-weight: 700; color: var(--texto-suave); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: 8px; }
+    .btn-nav-dir.active { background-color: var(--azul-vibrante); color: white; }
+
+    .secao-aba { display: none; }
+    .secao-aba.active { display: block; }
+
+    .grid-dash { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .card-dash { background: white; border: 1px solid var(--cor-borda); border-radius: var(--raio-borda); padding: 1.5rem; box-shadow: var(--sombra-card); }
+    .valor-dash { font-size: 1.8rem; font-weight: 800; color: var(--azul-vibrante); margin-top: 0.3rem; }
+
+    .grid-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .box-chart { background: white; padding: 1.5rem; border-radius: var(--raio-borda); border: 1px solid var(--cor-borda); box-shadow: var(--sombra-card); }
+
+    .tabela-financeira { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--cor-borda); }
+    .tabela-financeira th, .tabela-financeira td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--cor-borda); font-size: 0.88rem; }
+    .tabela-financeira th { background: #f8fafc; color: var(--azul-escuro); font-weight: 800; }
+    .status-pago { background: #dcfce7; color: #166534; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 700; font-size: 0.75rem; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-weight: 700; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--azul-escuro); }
+    .input-edit { width: 100%; padding: 0.6rem; border: 1px solid var(--cor-borda); border-radius: 6px; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- LOGO CORRIGIDA COM CABEÇA QUADRADA DE FUNDO BRANCO -->
+    <a href="index.html" class="brand-logo-container">
+      <div class="logo-box">
+        <svg class="logo-face-svg" viewBox="0 0 100 80">
+          <circle class="face-blue" cx="25" cy="25" r="10" />
+          <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+          <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+          <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+        </svg>
+      </div>
+      <div class="logo-text-group">
+        <span class="sub">Instituto</span>
+        <span class="title">três pontinhos</span>
+        <span class="slogan">Acolher, ajudar e acompanhar</span>
+      </div>
+    </a>
+
+    <div>
+      <span style="font-weight: 700; margin-right: 1rem;">Painel da Diretoria Geral</span>
+      <a href="login.html" onclick="localStorage.clear()" style="color: white; font-weight: 700; text-decoration: none; background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 6px;">Sair</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="menu-diretoria">
+      <button class="btn-nav-dir active" onclick="trocarAbaDir('dashboard', this)">📊 Dashboard & Indicadores</button>
+      <button class="btn-nav-dir" onclick="trocarAbaDir('financeiro', this)">💰 Controle Financeiro & Contas Pagas</button>
+      <button class="btn-nav-dir" onclick="trocarAbaDir('profissionais', this)">👨‍⚕️ Profissionais & Novo Cadastro</button>
+    </div>
+
+    <!-- ABA 1: DASHBOARD DE PROGRESSÃO DO INSTITUTO -->
+    <div id="abaDashboard" class="secao-aba active">
+      <div class="grid-dash">
+        <div class="card-dash">
+          <span style="color: var(--texto-suave); font-weight: 700; font-size: 0.85rem;">Faturamento Mensal</span>
+          <div class="valor-dash" style="color: #16a34a;">R$ 48.500,00</div>
+        </div>
+        <div class="card-dash">
+          <span style="color: var(--texto-suave); font-weight: 700; font-size: 0.85rem;">Despesas / Contas Pagas</span>
+          <div class="valor-dash" style="color: #dc2626;">R$ 21.300,00</div>
+        </div>
+        <div class="card-dash">
+          <span style="color: var(--texto-suave); font-weight: 700; font-size: 0.85rem;">Corpo Profissional</span>
+          <div class="valor-dash">14 Colaboradores</div>
+        </div>
+        <div class="card-dash">
+          <span style="color: var(--texto-suave); font-weight: 700; font-size: 0.85rem;">Pacientes Ativos</span>
+          <div class="valor-dash">42 Crianças</div>
+        </div>
+      </div>
+
+      <div class="grid-charts">
+        <div class="box-chart">
+          <h4 style="color: var(--azul-escuro); margin-bottom: 1rem;">Progressão Mensal de Atendimentos x Receita</h4>
+          <canvas id="chartEvolucao"></canvas>
+        </div>
+        <div class="box-chart">
+          <h4 style="color: var(--azul-escuro); margin-bottom: 1rem;">Distribuição de Despesas do Instituto</h4>
+          <canvas id="chartDespesas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA 2: FINANCEIRO E CONTAS PAGAS -->
+    <div id="abaFinanceiro" class="secao-aba">
+      <h3 style="color: var(--azul-escuro); margin-bottom: 1rem;">Histórico de Pagamentos e Contas Quitadas</h3>
+      
+      <table class="tabela-financeira">
+        <thead>
+          <tr>
+            <th>Descrição do Pagamento / Conta</th>
+            <th>Categoria</th>
+            <th>Data de Pagamento</th>
+            <th>Valor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Folha de Pagamento - Equipe Terapêutica</td>
+            <td>Recursos Humanos</td>
+            <td>05/10/2026</td>
+            <td>R$ 14.200,00</td>
+            <td><span class="status-pago">Pago</span></td>
+          </tr>
+          <tr>
+            <td>Aluguel da Sede do Instituto</td>
+            <td>Infraestrutura</td>
+            <td>01/10/2026</td>
+            <td>R$ 4.500,00</td>
+            <td><span class="status-pago">Pago</span></td>
+          </tr>
+          <tr>
+            <td>Materiais de Terapia ABA e Brinquedos Integrativos</td>
+            <td>Insumos Clínicos</td>
+            <td>08/10/2026</td>
+            <td>R$ 1.600,00</td>
+            <td><span class="status-pago">Pago</span></td>
+          </tr>
+          <tr>
+            <td>Licenças de Softwares e Prontuário Eletrônico</td>
+            <td>Tecnologia</td>
+            <td>10/10/2026</td>
+            <td>R$ 1.000,00</td>
+            <td><span class="status-pago">Pago</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ABA 3: CADASTRO E LISTA DE PROFISSIONAIS -->
+    <div id="abaProfissionais" class="secao-aba">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        
+        <!-- Formulário de Cadastro do Profissional -->
+        <div style="background: white; padding: 1.5rem; border-radius: var(--raio-borda); border: 1px solid var(--cor-borda);">
+          <h3 style="color: var(--azul-escuro); margin-bottom: 1rem;">Cadastrar Novo Profissional</h3>
+          <form onsubmit="cadastrarProfissional(event)">
+            <div class="form-group">
+              <label>Nome Completo do Profissional *</label>
+              <input type="text" class="input-edit" required placeholder="Ex: Dra. Juliana Costa">
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label>CPF *</label>
+                <input type="text" class="input-edit" required placeholder="000.000.000-00">
+              </div>
+              <div class="form-group">
+                <label>Telefone / WhatsApp *</label>
+                <input type="text" class="input-edit" required placeholder="(85) 90000-0000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Ocupação / Especialidade *</label>
+              <select class="input-edit" required>
+                <option value="">Selecione a Ocupação</option>
+                <option>Psicólogo(a) - Terapia ABA</option>
+                <option>Psicomotricista</option>
+                <option>Terapeuta Ocupacional</option>
+                <option>Fonoaudiólogo(a)</option>
+                <option>Nutricionista Comportamental</option>
+              </select>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Registro Profissional (CRP/CREFITO/CRN) *</label>
+                <input type="text" class="input-edit" required placeholder="Ex: CRP 11/12345">
+              </div>
+              <div class="form-group">
+                <label>Valor da Hora/Sessão (R$)</label>
+                <input type="number" class="input-edit" placeholder="120.00">
+              </div>
+            </div>
+
+            <button type="submit" style="width: 100%; background: var(--laranja-brand); color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 0.5rem;">Cadastrar Profissional</button>
+          </form>
+        </div>
+
+        <!-- Lista de Profissionais Ativos -->
+        <div style="background: white; padding: 1.5rem; border-radius: var(--raio-borda); border: 1px solid var(--cor-borda);">
+          <h3 style="color: var(--azul-escuro); margin-bottom: 1rem;">Corpo Profissional Cadastrado</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+            <div style="padding: 0.8rem; border: 1px solid var(--cor-borda); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>Dr. André Mendonça</strong>
+                <p style="font-size: 0.8rem; color: var(--texto-suave);">Psicólogo - Terapia ABA (CRP 11/0892)</p>
+              </div>
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--azul-vibrante);">Ativo</span>
+            </div>
+
+            <div style="padding: 0.8rem; border: 1px solid var(--cor-borda); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>Dra. Camila Rocha</strong>
+                <p style="font-size: 0.8rem; color: var(--texto-suave);">Nutricionista Infantil (CRN 11/4431)</p>
+              </div>
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--azul-vibrante);">Ativa</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Animação de Piscar o Olho
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON' || e.target.closest('.brand-logo-container')) {
+        const logo = document.querySelector('.brand-logo-container');
+        if (logo) {
+          logo.classList.add('piscando');
+          setTimeout(() => logo.classList.remove('piscando'), 200);
+        }
+      }
+    });
+
+    function trocarAbaDir(abaId, btn) {
+      document.querySelectorAll('.btn-nav-dir').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.secao-aba').forEach(s => s.classList.remove('active'));
+
+      btn.classList.add('active');
+      if(abaId === 'dashboard') document.getElementById('abaDashboard').classList.add('active');
+      if(abaId === 'financeiro') document.getElementById('abaFinanceiro').classList.add('active');
+      if(abaId === 'profissionais') document.getElementById('abaProfissionais').classList.add('active');
+    }
+
+    function cadastrarProfissional(e) {
+      e.preventDefault();
+      alert('✅ Profissional cadastrado com sucesso!');
+    }
+
+    // Inicialização dos Gráficos Gerenciais com Chart.js
+    window.onload = function() {
+      const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
+      new Chart(ctxEvolucao, {
+        type: 'line',
+        data: {
+          labels: ['Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro'],
+          datasets: [{
+            label: 'Receita (R$)',
+            data: [32000, 35000, 39000, 41000, 45000, 48500],
+            borderColor: '#0ea5e9',
+            backgroundColor: 'rgba(14, 165, 233, 0.1)',
+            fill: true
+          }]
+        }
+      });
+
+      const ctxDespesas = document.getElementById('chartDespesas').getContext('2d');
+      new Chart(ctxDespesas, {
+        type: 'doughnut',
+        data: {
+          labels: ['Equipe / RH', 'Aluguel & Sede', 'Insumos / Material', 'Tecnologia'],
+          datasets: [{
+            data: [14200, 45000, 1600, 1000],
+            backgroundColor: ['#0ea5e9', '#f97316', '#eab308', '#64748b']
+          }]
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato | Instituto Três Pontinhos</title>
+  <meta name="description" content="Fale com o Instituto Três Pontinhos: Rua Padre Valdevino, 294 - Joaquim Távora, Fortaleza-CE. WhatsApp (85) 99200-5743.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo-container" aria-label="Instituto Três Pontinhos — página inicial">
+        <span class="logo-box">
+          <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+            <circle class="face-blue" cx="25" cy="25" r="10" />
+            <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+            <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+            <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+          </svg>
+        </span>
+        <span class="logo-text-group">
+          <span class="sub">Instituto</span>
+          <span class="title">três pontinhos</span>
+          <span class="slogan">Acolher, ajudar e acompanhar</span>
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="siteNav">☰</button>
+      <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="quem-somos.html">Quem somos</a>
+        <a href="terapias.html">Terapias</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="doacao.html">Doação</a>
+        <a href="trabalhe-conosco.html">Trabalhe conosco</a>
+        <a href="contato.html">Contato</a>
+        <a href="login.html" class="btn-acesso">Área Restrita / Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="secao secao--clara">
+    <div class="secao-inner">
+      <p class="hero-eyebrow">Estamos por aqui</p>
+      <h1 class="secao-titulo">Fale conosco</h1>
+      <p class="secao-sub">Escolha o melhor canal e fale com a nossa equipe.</p>
+
+      <div class="grid-cards">
+        <article class="card-generico">
+          <span class="card-icone" aria-hidden="true">📍</span>
+          <h3>Nosso endereço</h3>
+          <p>Rua Padre Valdevino, 294<br>Joaquim Távora — Fortaleza, Ceará</p>
+          <p class="mt-1"><a class="btn-outline btn-pequeno" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&amp;query=Rua+Padre+Valdevino,+294,+Joaquim+T%C3%A1vora,+Fortaleza">Ver no mapa</a></p>
+        </article>
+        <article class="card-generico">
+          <span class="card-icone" aria-hidden="true">💬</span>
+          <h3>Nosso WhatsApp</h3>
+          <p><a href="https://wa.me/5585992005743">(85) 99200-5743</a></p>
+          <p class="mt-1"><a class="btn-primary btn-pequeno" target="_blank" rel="noopener"
+             href="https://wa.me/5585992005743?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20Instituto%20Tr%C3%AAs%20Pontinhos.">Iniciar conversa</a></p>
+        </article>
+        <article class="card-generico">
+          <span class="card-icone" aria-hidden="true">✉️</span>
+          <h3>Nosso e-mail</h3>
+          <p><a href="mailto:trespontinhos.contato@gmail.com">trespontinhos.contato@gmail.com</a></p>
+          <p class="mt-1"><a class="btn-outline btn-pequeno" href="mailto:trespontinhos.contato@gmail.com?subject=Contato%20pelo%20site">Enviar e-mail</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao secao--laranja">
+    <div class="secao-inner">
+      <h2 class="secao-titulo">Envie uma mensagem</h2>
+      <form class="form-card" id="formContato">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="contatoNome">Seu nome *</label>
+            <input type="text" id="contatoNome" class="input-field" required placeholder="Nome completo">
+          </div>
+          <div class="form-group">
+            <label for="contatoTelefone">Telefone / WhatsApp *</label>
+            <input type="tel" id="contatoTelefone" class="input-field" required maxlength="15"
+                   placeholder="(85) 90000-0000" oninput="Global.mascaraTelefone(this)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contatoAssunto">Assunto *</label>
+          <select id="contatoAssunto" class="input-field" required>
+            <option value="Agendamento de triagem">Agendamento de triagem</option>
+            <option value="Programa de Inclusão Social">Programa de Inclusão Social (vagas sociais)</option>
+            <option value="Doação">Doação e apoio ao Instituto</option>
+            <option value="Voluntariado">Voluntariado</option>
+            <option value="Outro assunto">Outro assunto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="contatoMensagem">Mensagem *</label>
+          <textarea id="contatoMensagem" class="input-field" rows="4" required
+                    placeholder="Escreva sua mensagem para a nossa equipe"></textarea>
+        </div>
+        <button type="submit" class="btn-laranja btn-bloco">Enviar mensagem</button>
+        <p class="form-status" id="statusContato" role="alert"></p>
+        <p class="form-hint">A mensagem é enviada pelo seu próprio WhatsApp ou e-mail — assim você fala
+          direto com a equipe do Instituto, sem intermediários.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="secao secao--clara">
+    <div class="secao-inner">
+      <h2 class="secao-titulo">Como chegar</h2>
+      <iframe title="Mapa do Instituto Três Pontinhos" loading="lazy" width="100%" height="380"
+        style="border:0; border-radius:12px"
+        src="https://www.google.com/maps?q=Rua+Padre+Valdevino,+294,+Joaquim+T%C3%A1vora,+Fortaleza&amp;output=embed"></iframe>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Como podemos ajudar?</h4>
+        <ul class="footer-links">
+          <li><a href="doacao.html">Quero doar</a></li>
+          <li><a href="quem-somos.html">Quem somos</a></li>
+          <li><a href="terapias.html">Terapias Infantis</a></li>
+          <li><a href="agenda.html">Agenda do Instituto</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="trabalhe-conosco.html">Trabalhe conosco</a></li>
+          <li><a href="login.html">Área Restrita / Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-info">
+        <p><strong>Instituto Três Pontinhos</strong> | CNPJ: 59.795.570/0001-68</p>
+        <p>Endereço: Rua Padre Valdevino, 294 - Joaquim Távora, Fortaleza-CE</p>
+        <p>WhatsApp: <a href="https://wa.me/5585992005743">(85) 99200-5743</a></p>
+        <p>E-mail: <a href="mailto:trespontinhos.contato@gmail.com">trespontinhos.contato@gmail.com</a></p>
+        <p class="copy">© <span data-ano>2026</span>. Instituto Três Pontinhos | Termos e Condições | Política de Privacidade</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/global.js"></script>
+  <script>
+    Global.iniciarSite('contato.html');
+
+    document.getElementById('formContato').addEventListener('submit', function (evento) {
+      evento.preventDefault();
+
+      const nome = document.getElementById('contatoNome').value.trim();
+      const telefone = document.getElementById('contatoTelefone').value.trim();
+      const assunto = document.getElementById('contatoAssunto').value;
+      const mensagem = document.getElementById('contatoMensagem').value.trim();
+      const status = document.getElementById('statusContato');
+
+      if (!nome || !telefone || !mensagem) {
+        status.className = 'form-status erro';
+        status.textContent = '⚠️ Preencha nome, telefone e mensagem.';
+        return;
+      }
+
+      const texto = 'Olá, Instituto Três Pontinhos! Meu nome é ' + nome +
+        ' (telefone ' + telefone + '). Assunto: ' + assunto + '. Mensagem: ' + mensagem;
+
+      status.className = 'form-status ok';
+      status.textContent = 'Tudo pronto! Abrindo o WhatsApp para enviar sua mensagem...';
+
+      setTimeout(function () {
+        window.open('https://wa.me/5585992005743?text=' + encodeURIComponent(texto), '_blank');
+      }, 400);
+    });
+  </script>
+</body>
+</html>

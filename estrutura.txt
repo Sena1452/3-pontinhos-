@@ -1,0 +1,42 @@
+INSTITUTO TRÊS PONTINHOS — ESTRUTURA DE ARQUIVOS
+=================================================
+
+instituto-tres-pontinhos/
+│
+├── SITE PÚBLICO (fiel a institutotrespontinhos.com.br)
+│   ├── index.html              # Início: hero, terapias, projetos, impacto
+│   ├── quem-somos.html         # Missão, meta, pilares e direção
+│   ├── terapias.html           # Terapias, triagem e formas de ingresso
+│   ├── agenda.html             # Eventos do Instituto
+│   ├── doacao.html             # Doação (PIX + intenção via WhatsApp)
+│   ├── trabalhe-conosco.html   # Banco de Talentos
+│   └── contato.html            # Endereço, WhatsApp, e-mail e mapa
+│
+├── ÁREA RESTRITA (login por CPF + guard de rota em cada painel)
+│   ├── login.html              # Login unificado (CPF + senha)
+│   ├── cliente.html            # Responsável legal: agenda, cancela, baixa ficha
+│   ├── profissional.html       # Atendimentos do dia, presença, próxima consulta
+│   ├── coordenacao.html        # Calendário, pacientes, cadastro, remarcação
+│   └── diretor.html            # KPIs, gráficos, financeiro, profissionais
+│
+├── css/
+│   └── estilo.css              # ARQUIVO ÚNICO de estilos (tokens + público + painéis)
+│
+├── js/
+│   ├── firebase-config.js      # Credenciais do Firebase (ativo: false por padrão)
+│   ├── banco.js                # Camada de dados: localStorage <-> Firestore
+│   ├── auth.js                 # Login por CPF, sessão e proteção de rotas
+│   ├── global.js               # Formatação pt-BR, toast, modais, máscaras, logo
+│   ├── cliente.js              # Lógica do painel do cliente
+│   ├── profissional.js         # Lógica do painel do profissional
+│   ├── coordenacao.js          # Lógica do painel da coordenadoria
+│   └── diretor.js              # Lógica do painel da direção
+│
+├── legado/                     # Backup da versão anterior (pode apagar)
+├── _validar.py                 # Script interno de verificação do projeto
+├── README.md                   # Como rodar, credenciais, Firebase e correções
+└── estrutura.txt / ideia.txt   # Esta documentação
+
+Observação: os arquivos antigos (js/app.js, js/firebase-config inexistente,
+css/style.css, js/cliente.js duplicado etc.) citados na documentação anterior
+NÃO existem mais; foram renomeados, unificados ou movidos para legado/.

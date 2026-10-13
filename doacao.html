@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doe e Apoie | Instituto Três Pontinhos</title>
+  <meta name="description" content="Faça parte dessa transformação: cada doação mantém atendimentos, projetos sociais e ações que acolhem famílias atípicas em Fortaleza.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo-container" aria-label="Instituto Três Pontinhos — página inicial">
+        <span class="logo-box">
+          <svg class="logo-face-svg" viewBox="0 0 100 80" aria-hidden="true" focusable="false">
+            <circle class="face-blue" cx="25" cy="25" r="10" />
+            <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+            <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+            <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+          </svg>
+        </span>
+        <span class="logo-text-group">
+          <span class="sub">Instituto</span>
+          <span class="title">três pontinhos</span>
+          <span class="slogan">Acolher, ajudar e acompanhar</span>
+        </span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="siteNav">☰</button>
+      <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="quem-somos.html">Quem somos</a>
+        <a href="terapias.html">Terapias</a>
+        <a href="agenda.html">Agenda</a>
+        <a href="doacao.html">Doação</a>
+        <a href="trabalhe-conosco.html">Trabalhe conosco</a>
+        <a href="contato.html">Contato</a>
+        <a href="login.html" class="btn-acesso">Área Restrita / Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="secao secao--clara">
+    <div class="secao-inner secao--centro">
+      <p class="hero-eyebrow">Seja um ponto de virada!</p>
+      <h1 class="secao-titulo">Faça parte dessa transformação</h1>
+      <p class="secao-sub">Cada doação ajuda a manter atendimentos, projetos sociais e ações que acolhem
+        famílias atípicas todos os dias.</p>
+    </div>
+
+    <form class="form-card" id="formDoacao">
+      <div class="form-group">
+        <label for="frequenciaDoacao">Frequência da doação</label>
+        <select id="frequenciaDoacao" class="input-field">
+          <option value="Única">1 vez</option>
+          <option value="Mensal">Mensal</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="valorDoacao">Valor a doar</label>
+        <select id="valorDoacao" class="input-field">
+          <option value="10">R$ 10</option>
+          <option value="15">R$ 15</option>
+          <option value="30" selected>R$ 30</option>
+          <option value="60">R$ 60</option>
+          <option value="100">R$ 100</option>
+          <option value="300">R$ 300</option>
+          <option value="outro">Outro valor</option>
+        </select>
+        <p class="form-hint" id="descricaoValor"></p>
+      </div>
+
+      <div class="form-group escondido" id="grupoOutroValor">
+        <label for="valorPersonalizado">Informe o valor (R$)</label>
+        <input type="number" id="valorPersonalizado" class="input-field" min="1" step="0.01" placeholder="Ex: 50">
+      </div>
+
+      <button type="submit" class="btn-laranja btn-bloco">Quero doar</button>
+      <p class="form-status" id="statusDoacao" role="alert"></p>
+
+      <div class="acesso-rapido">
+        <h3>Doação por PIX</h3>
+        <p class="form-hint mb-1">Use o botão abaixo para copiar a chave PIX do Instituto e colar no
+          aplicativo do seu banco.</p>
+        <button type="button" class="btn-primary btn-bloco" id="btnCopiarPix">Copiar chave PIX</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="secao secao--laranja">
+    <div class="secao-inner">
+      <div class="secao--centro">
+        <h2 class="secao-titulo">Para onde vai a sua doação</h2>
+        <p class="secao-sub">Transparência total: cada valor tem um destino dentro do Instituto.</p>
+      </div>
+      <div class="grid-cards">
+        <article class="card-generico"><h3>R$ 10</h3><p>Materiais de atividades e momentos de acolhimento das nossas crianças.</p></article>
+        <article class="card-generico"><h3>R$ 15</h3><p>Manutenção de materiais terapêuticos e atividades de estímulo.</p></article>
+        <article class="card-generico"><h3>R$ 30</h3><p>Ações de acolhimento às famílias, rodas de conversa e suporte emocional às mães.</p></article>
+        <article class="card-generico"><h3>R$ 60</h3><p>Vagas sociais em atendimentos nutricionais, psicológicos ou oficinas de capacitação.</p></article>
+        <article class="card-generico"><h3>R$ 100</h3><p>Projetos sociais como lazer inclusivo, oficinas e ações comunitárias.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Como podemos ajudar?</h4>
+        <ul class="footer-links">
+          <li><a href="doacao.html">Quero doar</a></li>
+          <li><a href="quem-somos.html">Quem somos</a></li>
+          <li><a href="terapias.html">Terapias Infantis</a></li>
+          <li><a href="agenda.html">Agenda do Instituto</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="trabalhe-conosco.html">Trabalhe conosco</a></li>
+          <li><a href="login.html">Área Restrita / Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-info">
+        <p><strong>Instituto Três Pontinhos</strong> | CNPJ: 59.795.570/0001-68</p>
+        <p>Endereço: Rua Padre Valdevino, 294 - Joaquim Távora, Fortaleza-CE</p>
+        <p>WhatsApp: <a href="https://wa.me/5585992005743">(85) 99200-5743</a></p>
+        <p>E-mail: <a href="mailto:trespontinhos.contato@gmail.com">trespontinhos.contato@gmail.com</a></p>
+        <p class="copy">© <span data-ano>2026</span>. Instituto Três Pontinhos | Termos e Condições | Política de Privacidade</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/global.js"></script>
+  <script>
+    Global.iniciarSite('doacao.html');
+
+    /* IMPORTANTE: preencha abaixo a chave PIX oficial do Instituto.
+       Enquanto estiver com o texto padrão, o botão orienta a doadora a
+       solicitar a chave pelo WhatsApp (nada de chave inventada aqui). */
+    const CHAVE_PIX = 'COLOQUE_AQUI_A_CHAVE_PIX_OFICIAL';
+    const WHATSAPP = '5585992005743';
+
+    const descricoes = {
+      '10':    'Contribui para materiais de atividades e momentos de acolhimento das nossas crianças.',
+      '15':    'Ajuda a manter materiais terapêuticos e atividades de estímulo para as crianças atendidas.',
+      '30':    'Contribui para ações de acolhimento às famílias, rodas de conversa e suporte emocional às mães.',
+      '60':    'Apoia vagas sociais em atendimentos nutricionais, psicológicos ou oficinas de capacitação.',
+      '100':   'Colabora com projetos sociais como lazer inclusivo, oficinas e ações comunitárias.',
+      '300':   'Fortalece a manutenção da sede e das terapias oferecidas às famílias.',
+      'outro': 'Escolha livremente o valor da sua contribuição.'
+    };
+
+    const campoValor = document.getElementById('valorDoacao');
+    const campoFrequencia = document.getElementById('frequenciaDoacao');
+    const campoOutro = document.getElementById('grupoOutroValor');
+    const botaoDoar = document.querySelector('#formDoacao .btn-laranja');
+    const descricao = document.getElementById('descricaoValor');
+    const statusDoacao = document.getElementById('statusDoacao');
+
+    function atualizarValor() {
+      const escolha = campoValor.value;
+      const frequencia = campoFrequencia.value === 'Mensal' ? 'doação mensal' : 'doação única';
+      descricao.textContent = (descricoes[escolha] || '') + ' (' + frequencia + ')';
+      campoOutro.classList.toggle('escondido', escolha !== 'outro');
+      botaoDoar.textContent = escolha === 'outro' ? 'Quero doar' : 'Quero doar R$ ' + escolha;
+    }
+
+    campoValor.addEventListener('change', atualizarValor);
+    campoFrequencia.addEventListener('change', atualizarValor);
+    atualizarValor();
+
+    document.getElementById('formDoacao').addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      const escolha = campoValor.value;
+      const valor = escolha === 'outro' ? document.getElementById('valorPersonalizado').value : escolha;
+
+      if (!valor || Number(valor) <= 0) {
+        statusDoacao.className = 'form-status erro';
+        statusDoacao.textContent = '⚠️ Informe o valor que deseja doar.';
+        return;
+      }
+
+      statusDoacao.className = 'form-status ok';
+      statusDoacao.textContent = 'Obrigado! Abrindo o WhatsApp para concluir sua doação...';
+
+      const mensagem = 'Olá! Quero fazer uma ' + (campoFrequencia.value === 'Mensal' ? 'doação mensal' : 'doação única') +
+        ' de ' + Global.moeda(valor) + ' para o Instituto Três Pontinhos. Como faço?';
+
+      setTimeout(function () {
+        window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(mensagem), '_blank');
+      }, 500);
+    });
+
+    document.getElementById('btnCopiarPix').addEventListener('click', async function () {
+      if (CHAVE_PIX.indexOf('COLOQUE_AQUI') === 0) {
+        Global.avisar('A chave PIX ainda não foi cadastrada no site. Solicite pelo WhatsApp (85) 99200-5743.', 'erro');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(CHAVE_PIX);
+        Global.avisar('Chave PIX copiada! Cole no aplicativo do seu banco.', 'sucesso');
+      } catch (erro) {
+        Global.avisar('Não foi possível copiar automaticamente. Chave: ' + CHAVE_PIX, 'erro');
+      }
+    });
+  </script>
+</body>
+</html>

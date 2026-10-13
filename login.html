@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Instituto Três Pontinhos</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+  <script src="js/firebase-config.js"></script>
+  <script src="js/banco.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/global.js"></script>
+  <style>
+    body { 
+      background: #0f172a; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      padding: 1rem; 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .card-login { 
+      background: #ffffff; 
+      padding: 2.2rem; 
+      border-radius: var(--raio-borda, 16px); 
+      width: 100%; 
+      max-width: 440px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35); 
+    }
+    .header-logo-card {
+      background: var(--azul-vibrante, #1a73e8); 
+      padding: 1.2rem; 
+      border-radius: 12px; 
+      margin-bottom: 1.5rem; 
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .abas-login {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 10px;
+    }
+    .btn-aba-login {
+      flex: 1;
+      padding: 8px 10px;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-aba-login.ativa {
+      background: #ffffff;
+      color: var(--azul-escuro, #0d47a1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .form-group { 
+      margin-bottom: 1.1rem; 
+    }
+    .form-group label { 
+      display: block; 
+      font-weight: 700; 
+      font-size: 0.85rem; 
+      margin-bottom: 0.4rem; 
+      color: var(--azul-escuro, #0f172a); 
+    }
+    .input-field { 
+      width: 100%; 
+      padding: 0.75rem 0.9rem; 
+      border: 1px solid var(--cor-borda, #cbd5e1); 
+      border-radius: 8px; 
+      font-size: 0.95rem; 
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--azul-vibrante, #1a73e8);
+      box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+    }
+    .btn-entrar { 
+      width: 100%; 
+      background: var(--azul-vibrante, #1a73e8); 
+      color: white; 
+      border: none; 
+      padding: 0.85rem; 
+      border-radius: 8px; 
+      font-weight: 800; 
+      cursor: pointer; 
+      font-size: 1rem; 
+      margin-top: 0.5rem; 
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .btn-entrar:hover { 
+      background: #0d47a1; 
+    }
+    .btn-entrar:active {
+      transform: scale(0.98);
+    }
+    .credenciais-rapidas {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #e2e8f0;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .credenciais-rapidas summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--azul-vibrante);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-login">
+    <div class="header-logo-card">
+      <a href="index.html" class="brand-logo-container">
+        <div class="logo-box">
+          <svg class="logo-face-svg" viewBox="0 0 100 80">
+            <circle class="face-blue" cx="25" cy="25" r="10" />
+            <circle class="face-blue eye-right" cx="75" cy="25" r="10" />
+            <path class="face-blue" d="M 15 45 Q 50 85 85 45 Q 50 65 15 45 Z" />
+            <path class="tongue-orange" d="M 50 60 Q 60 70 70 58 Z" />
+          </svg>
+        </div>
+        <div class="logo-text-group">
+          <span class="sub">Instituto</span>
+          <span class="title">três pontinhos</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- ABAS: ACESSO FAMÍLIA/EQUIPE (CPF) VS GESTÃO FINANCEIRO (E-MAIL) -->
+    <div class="abas-login" role="tablist">
+      <button type="button" class="btn-aba-login ativa" id="tabCpf" onclick="selecionarModoLogin('cpf')">
+        👨‍👩‍👧 Família / Equipe (CPF)
+      </button>
+      <button type="button" class="btn-aba-login" id="tabEmail" onclick="selecionarModoLogin('email')">
+        💼 Gestão Financeiro (E-mail)
+      </button>
+    </div>
+
+    <h2 style="color: var(--azul-escuro, #0f172a); margin-bottom: 0.3rem;" id="tituloLogin">Acesso ao Sistema</h2>
+    <p style="color: var(--texto-suave, #64748b); font-size: 0.85rem; margin-bottom: 1.2rem;" id="subtituloLogin">
+      Informe o seu CPF cadastrado e sua senha.
+    </p>
+
+    <form id="formLogin" onsubmit="executarLogin(event)">
+      <!-- CAMPO CPF -->
+      <div class="form-group" id="grupoCPF">
+        <label for="campoCPF">CPF *</label>
+        <input 
+          type="text" 
+          id="campoCPF" 
+          class="input-field" 
+          placeholder="000.000.000-00" 
+          maxlength="14"
+          oninput="Auth.mascaraCPF(this)"
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- CAMPO E-MAIL (GESTÃO FINANCEIRO) -->
+      <div class="form-group" id="grupoEmail" style="display:none;">
+        <label for="campoEmail">E-mail de Gestão *</label>
+        <input 
+          type="email" 
+          id="campoEmail" 
+          class="input-field" 
+          placeholder="gestao@trespontinhos.org"
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="campoSenha">Senha *</label>
+        <input type="password" id="campoSenha" class="input-field" required placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="btn-entrar" id="btnEntrar">Entrar no Sistema</button>
+      <p class="form-status" id="statusLogin" role="alert" style="margin-top:.8rem;"></p>
+    </form>
+
+    <div class="credenciais-rapidas">
+      <details>
+        <summary>💡 Acessos de demonstração cadastrados</summary>
+        <div style="margin-top:.5rem; line-height:1.5;">
+          <p><strong>💼 Gestão Financeiro:</strong> <code>gestao@trespontinhos.org</code> / senha: <code>123</code></p>
+          <p><strong>📋 Coordenadoria:</strong> CPF <code>222.222.222-22</code> / senha: <code>123</code></p>
+          <p><strong>👨‍⚕️ Profissional (Psicólogo):</strong> CPF <code>333.333.333-33</code> / senha: <code>123</code></p>
+          <p><strong>📝 Estagiário / AT:</strong> CPF <code>555.555.555-55</code> / senha: <code>123</code></p>
+          <p><strong>👨‍👩‍👧 Responsável / Cliente:</strong> CPF <code>444.444.444-44</code> / senha: <code>123</code></p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <script>
+    let modoAtual = 'cpf';
+
+    function selecionarModoLogin(modo) {
+      modoAtual = modo;
+      const tabCpf = document.getElementById('tabCpf');
+      const tabEmail = document.getElementById('tabEmail');
+      const grupoCPF = document.getElementById('grupoCPF');
+      const grupoEmail = document.getElementById('grupoEmail');
+      const campoCPF = document.getElementById('campoCPF');
+      const campoEmail = document.getElementById('campoEmail');
+      const titulo = document.getElementById('tituloLogin');
+      const subtitulo = document.getElementById('subtituloLogin');
+      const statusEl = document.getElementById('statusLogin');
+      if (statusEl) statusEl.textContent = '';
+
+      if (modo === 'email') {
+        tabCpf.classList.remove('ativa');
+        tabEmail.classList.add('ativa');
+        grupoCPF.style.display = 'none';
+        grupoEmail.style.display = 'block';
+        campoCPF.removeAttribute('required');
+        campoEmail.setAttribute('required', 'required');
+        titulo.textContent = 'Gestão Financeiro & Administrativa';
+        subtitulo.textContent = 'Acesso exclusivo para a direção e gestão com e-mail e senha.';
+        campoEmail.focus();
+      } else {
+        tabEmail.classList.remove('ativa');
+        tabCpf.classList.add('ativa');
+        grupoEmail.style.display = 'none';
+        grupoCPF.style.display = 'block';
+        campoEmail.removeAttribute('required');
+        campoCPF.setAttribute('required', 'required');
+        titulo.textContent = 'Acesso ao Sistema';
+        subtitulo.textContent = 'Informe o seu CPF cadastrado e sua senha.';
+        campoCPF.focus();
+      }
+    }
+
+    async function executarLogin(e) {
+      e.preventDefault();
+      const statusEl = document.getElementById('statusLogin');
+      statusEl.className = 'form-status';
+      statusEl.textContent = 'Verificando dados de acesso...';
+
+      const logo = document.querySelector('.brand-logo-container');
+      if (logo) logo.classList.add('piscando');
+
+      const senha = document.getElementById('campoSenha').value;
+      const identificador = modoAtual === 'email'
+        ? document.getElementById('campoEmail').value.trim()
+        : document.getElementById('campoCPF').value.trim();
+
+      const resultado = await Auth.login(identificador, senha);
+
+      if (!resultado.sucesso) {
+        if (logo) logo.classList.remove('piscando');
+        statusEl.className = 'form-status erro';
+        statusEl.textContent = '⚠️ ' + resultado.mensagem;
+        return;
+      }
+
+      statusEl.className = 'form-status ok';
+      statusEl.textContent = '✅ Acesso autorizado! Redirecionando...';
+
+      setTimeout(() => {
+        window.location.href = Auth.rotaDoPerfil(resultado.sessao.perfil);
+      }, 250);
+    }
+
+    // Inicializa campos
+    selecionarModoLogin('cpf');
+  </script>
+
+</body>
+</html>
